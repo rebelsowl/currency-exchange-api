@@ -4,6 +4,7 @@ import com.example.currencyexchange.data.model.constant.ErrorCodes;
 import com.example.currencyexchange.data.model.response.ErrorResponse;
 import com.example.currencyexchange.data.model.response.external.ConvertResponse;
 import com.example.currencyexchange.exception.CurrencyException;
+import com.example.currencyexchange.exception.ExternalServiceFaultException;
 import com.example.currencyexchange.service.Interface.IExternalFXService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class ExternalFXService implements IExternalFXService {
 
     private void checkCurrencyFormat(String currency) {
         if (currency == null || currency.length() != 3 || ! StringUtils.isAllUpperCase(currency)) {
-            throw CurrencyException.builder().errorResponse(new ErrorResponse(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode(), "Currency should be 3 letters long and all uppercase ex: USD, EUR")).build();
+            throw ExternalServiceFaultException.builder().errorResponse(new ErrorResponse(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode(), "Currency should be 3 letters long and all uppercase ex: USD, EUR")).build();
         }
     }
 }
