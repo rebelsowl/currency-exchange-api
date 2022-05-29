@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 
 public interface IExternalFXService {
 
-    public BigDecimal getExchangeRate(String sourceCurrency, String targetCurrency);
+    BigDecimal getExchangeRate(String sourceCurrency, String targetCurrency);
 
 }

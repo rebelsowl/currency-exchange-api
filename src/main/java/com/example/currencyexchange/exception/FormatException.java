@@ -6,6 +6,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CurrencyException extends RuntimeException {
+public class FormatException extends RuntimeException {
     private ErrorResponse errorResponse;
 }

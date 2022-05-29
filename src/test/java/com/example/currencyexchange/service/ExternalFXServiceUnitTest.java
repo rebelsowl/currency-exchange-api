@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import com.example.currencyexchange.data.model.constant.ErrorCodes;
 import com.example.currencyexchange.data.model.response.external.ConvertResponse;
 import com.example.currencyexchange.exception.CurrencyException;
+import com.example.currencyexchange.exception.ExternalServiceFaultException;
+import com.example.currencyexchange.exception.FormatException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,43 +45,43 @@ class ExternalFXServiceUnitTest {
     void testGetExchangeRateCurrencyFormatInteger() {
         String wrongFormatCurrency = "U1D";
 
-        CurrencyException exception = assertThrows(CurrencyException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
+        FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
 
-        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode());
+        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
     }
 
     @Test
     void testGetExchangeRateCurrencyFormatLowerCase() {
         String wrongFormatCurrency = "UsD";
 
-        CurrencyException exception = assertThrows(CurrencyException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
+        FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
 
-        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode());
+        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
     }
 
     @Test
     void testGetExchangeRateCurrencyFormatLengthLong() {
         String wrongFormatCurrency = "USDA";
 
-        CurrencyException exception = assertThrows(CurrencyException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
+        FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
 
-        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode());
+        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
     }
 
     @Test
     void testGetExchangeRateCurrencyFormatLengthShort() {
         String wrongFormatCurrency = "U";
 
-        CurrencyException exception = assertThrows(CurrencyException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
+        FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, "EUR"));
 
-        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode());
+        assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
     }
 
     @Test
     void testGetExchangeRateCurrencyNotFound() {
         ConvertResponse mockResponse = new ConvertResponse();
         mockResponse.setSuccess(true);
-        // result should be null
+        // result should be null -> don't set result
         String notUsedCurrency = "AAA";
 
         when(restTemplate.getForObject(any(String.class), any(Class.class))).thenReturn(mockResponse);
@@ -96,7 +98,7 @@ class ExternalFXServiceUnitTest {
 
         when(restTemplate.getForObject(any(String.class), any(Class.class))).thenReturn(mockResponse);
 
-        CurrencyException exception = assertThrows(CurrencyException.class, () -> fxService.getExchangeRate("USD", "EUR"));
+        ExternalServiceFaultException exception = assertThrows(ExternalServiceFaultException.class, () -> fxService.getExchangeRate("USD", "EUR"));
 
         assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.EXTERNAL_SERVICE_ERROR.getCode());
     }

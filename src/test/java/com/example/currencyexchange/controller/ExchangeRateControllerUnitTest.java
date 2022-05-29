@@ -4,6 +4,7 @@ import com.example.currencyexchange.data.model.constant.ErrorCodes;
 import com.example.currencyexchange.data.model.response.ErrorResponse;
 import com.example.currencyexchange.exception.CurrencyException;
 import com.example.currencyexchange.service.Interface.IExternalFXService;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,12 +45,16 @@ class ExchangeRateControllerUnitTest {
 
     @Test
     void testGetExchangeRateWrongFormat() throws Exception {
-        when(fxService.getExchangeRate(anyString(), anyString())).thenThrow(CurrencyException.builder().errorResponse(new ErrorResponse(ErrorCodes.CURRENCY_FORMAT_ERROR.getCode(), "exception msg")).build());
+        when(fxService.getExchangeRate(anyString(), anyString())).thenThrow(CurrencyException.builder().errorResponse(new ErrorResponse(ErrorCodes.FORMAT_ERROR.getCode(), "exception msg")).build());
 
-        mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 get("/exchange-rate").param("from", "123").param("to", "EUR"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
+        ErrorResponse response = new Gson().fromJson(result.getResponse().getContentAsString(), ErrorResponse.class);
+
+        assertThat(response.getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
+        assertThat(response.getMessage()).isInstanceOfAny(String.class);
     }
 
 }

@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name="Conversions")
-public class Conversion extends BaseEntity{
+@Table(name = "Conversions")
+public class Conversion extends BaseEntity {
 
     @Column(name = "sourceCurrency")
     private String sourceCurrency;
