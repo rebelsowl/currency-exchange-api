@@ -42,8 +42,8 @@ class ConversionServiceUnitTest {
     public static void setUp(){
         sourceCurrency = "USD";
         targetCurrency = "EUR";
-        sourceAmount = new BigDecimal(12.1);
-        exchangeRate = new BigDecimal(2.1);
+        sourceAmount = new BigDecimal("12.1");
+        exchangeRate = new BigDecimal("2.1");
 
         mockRequest = new ConversionRequest();
         mockRequest.setSourceCurrency(sourceCurrency);

@@ -55,9 +55,8 @@ public class ConversionService implements IConversionService {
     @Override
     public Page<Conversion> getConversions(ConversionListRequest request, Pageable pageable) {
         checkRequest(request);
-        Page<Conversion> response = conversionRepository.findByIdAndDate(request.getTransactionId(), request.getTransactionDate(), pageable);
 
-        return response;
+        return conversionRepository.findByIdAndDate(request.getTransactionId(), request.getTransactionDate(), pageable);
     }
 
 

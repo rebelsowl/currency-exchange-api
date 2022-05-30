@@ -50,7 +50,6 @@ public class ExternalFXService implements IExternalFXService {
             } else
                 throw ExternalServiceFaultException.builder().errorResponse(new ErrorResponse(ErrorCodes.EXTERNAL_SERVICE_ERROR.getCode(), "Our services are currently unavailable, please try again later.")).build();
         } catch (HttpClientErrorException e) {
-            System.out.println(e);
             // TODO: not found alinca da
             throw e;
         }
