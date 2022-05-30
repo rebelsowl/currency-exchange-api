@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @WebMvcTest(ExchangeRateController.class)
 class ExchangeRateControllerUnitTest {
 
@@ -48,7 +49,7 @@ class ExchangeRateControllerUnitTest {
         when(fxService.getExchangeRate(anyString(), anyString())).thenThrow(CurrencyException.builder().errorResponse(new ErrorResponse(ErrorCodes.FORMAT_ERROR.getCode(), "exception msg")).build());
 
         MvcResult result = mockMvc.perform(
-                get("/exchange-rate").param("from", "123").param("to", "EUR"))
+                        get("/exchange-rate").param("from", "123").param("to", "EUa"))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
         ErrorResponse response = new Gson().fromJson(result.getResponse().getContentAsString(), ErrorResponse.class);

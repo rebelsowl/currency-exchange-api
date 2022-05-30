@@ -37,7 +37,6 @@ public class ExternalFXService implements IExternalFXService {
         checkCurrencyFormat(sourceCurrency);
         checkCurrencyFormat(targetCurrency);
         try {
-//            TODO: constant string
             String url = String.format("%s/convert?from=%s&to=%s", EXTERNAL_SERVICE_API, sourceCurrency, targetCurrency);
             ConvertResponse response = restTemplate.getForObject(url, ConvertResponse.class);
 
@@ -50,10 +49,8 @@ public class ExternalFXService implements IExternalFXService {
             } else
                 throw ExternalServiceFaultException.builder().errorResponse(new ErrorResponse(ErrorCodes.EXTERNAL_SERVICE_ERROR.getCode(), "Our services are currently unavailable, please try again later.")).build();
         } catch (HttpClientErrorException e) {
-            // TODO: not found alinca da
-            throw e;
+            throw ExternalServiceFaultException.builder().errorResponse(new ErrorResponse(ErrorCodes.EXTERNAL_SERVICE_ERROR.getCode(), "Our services are currently unavailable, please try again later.", e.getMessage())).build();
         }
-
     }
 
     private void checkCurrencyFormat(String currency) {

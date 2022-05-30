@@ -13,4 +13,9 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    public ErrorResponse(int code, String message, String detail) {
+        this.code = code;
+        this.message = message;
+        this.detail = detail;
+    }
 }

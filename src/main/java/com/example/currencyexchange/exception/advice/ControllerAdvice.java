@@ -44,7 +44,7 @@ public class ControllerAdvice {
     // GENERAL
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e){
-      log.error(e.toString()); // TODO: !!!!
+      log.error(e.toString());
       return new ResponseEntity<>( new ErrorResponse(ErrorCodes.UNEXPECTED_ERROR.getCode(), e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
