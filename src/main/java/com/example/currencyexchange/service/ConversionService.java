@@ -14,8 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
-
+@Transactional
 @Service
 public class ConversionService implements IConversionService {
 
@@ -32,6 +33,7 @@ public class ConversionService implements IConversionService {
         checkAmount(conversionRequest);
 
         BigDecimal conversionRate = fxService.getExchangeRate(conversionRequest.getSourceCurrency(), conversionRequest.getTargetCurrency());
+//        conversionRate.setScale(6, RoundingMode.HALF_EVEN);
 
         Conversion conversion = new Conversion();
 
@@ -54,8 +56,6 @@ public class ConversionService implements IConversionService {
     public Page<Conversion> getConversions(ConversionListRequest request, Pageable pageable) {
         checkRequest(request);
         Page<Conversion> response = conversionRepository.findByIdAndDate(request.getTransactionId(), request.getTransactionDate(), pageable);
-
-        System.out.println();
 
         return response;
     }

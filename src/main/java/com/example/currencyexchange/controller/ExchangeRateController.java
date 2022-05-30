@@ -37,7 +37,7 @@ public class ExchangeRateController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class))})})
     @GetMapping("/exchange-rate")
-    public ResponseEntity<BigDecimal> getExchangeRate(@Parameter(description = "Source currency. Should be 3 letters all uppercase valid currency", example = "USD") @RequestParam String from, @Parameter(description = "Target currency. Should be 3 letters all uppercase valid currency", example = "EUR") @RequestParam String to) {
+    public ResponseEntity<BigDecimal> getExchangeRate(@Parameter(description = "Source currency. Should be 3 letters, all uppercase, valid currency", example = "USD") @RequestParam String from, @Parameter(description = "Target currency. Should be 3 letters, all uppercase, valid currency", example = "EUR") @RequestParam String to) {
         return ResponseEntity.ok(fxService.getExchangeRate(from, to));
     }
 

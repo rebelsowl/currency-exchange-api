@@ -1,6 +1,5 @@
 package com.example.currencyexchange.controller;
 
-import com.example.currencyexchange.data.model.entity.Conversion;
 import com.example.currencyexchange.data.model.request.ConversionRequest;
 import com.example.currencyexchange.data.model.response.ConversionResponse;
 import com.example.currencyexchange.exception.FormatException;
@@ -9,12 +8,8 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import com.example.currencyexchange.data.model.constant.ErrorCodes;
 import com.example.currencyexchange.data.model.response.ErrorResponse;
-import com.example.currencyexchange.exception.CurrencyException;
-import com.example.currencyexchange.service.Interface.IExternalFXService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +20,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

@@ -14,9 +14,9 @@ import java.util.List;
 @Repository
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
 
+    // if input(s) is null where clause evaluates to true
     @Query("SELECT c FROM Conversion c WHERE (:id is null or c.id = :id) and (:date is null or c.createDate = :date)")
     Page<Conversion> findByIdAndDate(@Param("id") Long id, @Param("date") Date date, Pageable pageable);
 
-    List<Conversion> findByCreateDate(Date date);
 
 }

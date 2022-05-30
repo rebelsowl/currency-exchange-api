@@ -41,7 +41,7 @@ public class ControllerAdvice {
     }
 
 
-    // UNCATCHED
+    // GENERAL
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e){
       log.error(e.toString()); // TODO: !!!!

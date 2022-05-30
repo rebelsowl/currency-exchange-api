@@ -11,17 +11,9 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "Conversions")
 public class Conversion extends BaseEntity {
-
-    @Column(name = "sourceCurrency")
     private String sourceCurrency;
-
-    @Column(name = "sourceAmount")
     private BigDecimal sourceAmount;
-
-    @Column(name = "targetCurrency")
     private String targetCurrency;
-
-    @Column(name = "targetAmount")
     private BigDecimal targetAmount;
 
 }

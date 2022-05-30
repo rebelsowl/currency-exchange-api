@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 
 @Service
 public class ExternalFXService implements IExternalFXService {
-
+    private static final String EXTERNAL_SERVICE_API = "https://api.exchangerate.host";
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -37,12 +37,12 @@ public class ExternalFXService implements IExternalFXService {
         checkCurrencyFormat(sourceCurrency);
         checkCurrencyFormat(targetCurrency);
         try {
-            String url = String.format("https://api.exchangerate.host/convert?from=%s&to=%s", sourceCurrency, targetCurrency);
+//            TODO: constant string
+            String url = String.format("%s/convert?from=%s&to=%s", EXTERNAL_SERVICE_API, sourceCurrency, targetCurrency);
             ConvertResponse response = restTemplate.getForObject(url, ConvertResponse.class);
 
             if (response.isSuccess()) {
                 if (response.getResult() == null) {
-
                     ErrorResponse errorResponse = new ErrorResponse(ErrorCodes.CURRENCY_NOT_FOUND.getCode(), "Currently we do not serve " + sourceCurrency + " - " + targetCurrency + " currency pair.");
                     throw CurrencyException.builder().errorResponse(errorResponse).build();
                 }
