@@ -1,12 +1,15 @@
 package com.example.currencyexchange.data.model.response;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 public class ErrorResponse {
     private int code;
     private String message;
     private String detail;
+
 
     public ErrorResponse(int code, String message) {
         this.code = code;

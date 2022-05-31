@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -19,14 +19,8 @@ public class BaseEntity implements Serializable {
     Long id;
 
     @CreatedDate
-    @Temporal(TemporalType.DATE)
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createDate;
-
-//    ZonedDateTime
-// TODO: !!!!! INSTANT
-//    Instant
-
+    private Instant createDate;
 
 //    @LastModifiedDate
 //    @Column(name = "updated_at")

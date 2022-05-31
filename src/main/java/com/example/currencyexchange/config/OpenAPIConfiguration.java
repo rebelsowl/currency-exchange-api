@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAPIConfiguration {
 
     @Bean
-    public OpenAPI customOpenAPI(){
+    public OpenAPI customOpenAPI() {
         return new OpenAPI().info(new Info().title("Currency Exchange Application").version("1.0.0"));
     }
 }

@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+
 @Transactional
 @Service
 public class ConversionService implements IConversionService {
@@ -55,14 +59,19 @@ public class ConversionService implements IConversionService {
     @Override
     public Page<Conversion> getConversions(ConversionListRequest request, Pageable pageable) {
         checkRequest(request);
-
-        return conversionRepository.findByIdAndDate(request.getTransactionId(), request.getTransactionDate(), pageable);
+        Instant startDate = null;
+        Instant endDate = null;
+        if (request.getTransactionDate() != null) {
+             startDate = request.getTransactionDate().atStartOfDay().toInstant(ZoneOffset.UTC);
+             endDate = startDate.plus(1, ChronoUnit.DAYS);
+        }
+        return conversionRepository.findByIdAndDate(request.getTransactionId(), startDate, endDate, pageable);
     }
 
 
     /************************************* PRIVATE METHODS *************************************/
     private void checkAmount(ConversionRequest request) {
-        BigDecimal limit = new BigDecimal(0.1);
+        BigDecimal limit = new BigDecimal("0.1");
         if (request.getSourceAmount() == null || request.getSourceAmount().compareTo(limit) == -1) { // amount is less than limit
             throw FormatException.builder().errorResponse(new ErrorResponse(ErrorCodes.FORMAT_ERROR.getCode(), "Amount should be at least  0.1")).build();
         }

@@ -4,7 +4,7 @@ import com.example.currencyexchange.data.model.request.ConversionRequest;
 import com.example.currencyexchange.data.model.response.ConversionResponse;
 import com.example.currencyexchange.exception.FormatException;
 import com.example.currencyexchange.service.ConversionService;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +29,9 @@ class ConversionControllerUnitTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private ConversionService conversionService;
@@ -63,13 +66,13 @@ class ConversionControllerUnitTest {
 
         MvcResult result = mockMvc.perform(
                 post("/conversion")
-                        .content(new Gson().toJson(mockRequest))
+                        .content(objectMapper.writeValueAsString(mockRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ConversionResponse conversionResponse = new Gson().fromJson(result.getResponse().getContentAsString(), ConversionResponse.class);
+        ConversionResponse conversionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ConversionResponse.class);
         assertThat(conversionResponse.getTransactionId()).isEqualTo(2L);
         assertThat(conversionResponse.getTargetAmount()).isEqualTo(sourceAmount.multiply(exchangeRate));
     }
@@ -82,13 +85,13 @@ class ConversionControllerUnitTest {
 
         MvcResult result = mockMvc.perform(
                         post("/conversion")
-                                .content(new Gson().toJson(mockRequest))
+                                .content(objectMapper.writeValueAsString(mockRequest))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 
-        ErrorResponse response = new Gson().fromJson(result.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
 
         assertThat(response.getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
         assertThat(response.getMessage()).isInstanceOfAny(String.class);
@@ -102,13 +105,13 @@ class ConversionControllerUnitTest {
 
         MvcResult result = mockMvc.perform(
                         post("/conversion")
-                                .content(new Gson().toJson(mockRequest))
+                                .content(objectMapper.writeValueAsString(mockRequest))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 
-        ErrorResponse response = new Gson().fromJson(result.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
 
         assertThat(response.getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
         assertThat(response.getMessage()).isInstanceOfAny(String.class);
@@ -122,13 +125,13 @@ class ConversionControllerUnitTest {
 
         MvcResult result = mockMvc.perform(
                         post("/conversion")
-                                .content(new Gson().toJson(mockRequest))
+                                .content(objectMapper.writeValueAsString(mockRequest))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
                 .andReturn();
 
-        ErrorResponse response = new Gson().fromJson(result.getResponse().getContentAsString(), ErrorResponse.class);
+        ErrorResponse response = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
 
         assertThat(response.getCode()).isEqualTo(ErrorCodes.CURRENCY_NOT_FOUND.getCode());
         assertThat(response.getMessage()).isInstanceOfAny(String.class);

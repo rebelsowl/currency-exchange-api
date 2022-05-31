@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class ConversionListRequest {
@@ -13,5 +13,5 @@ public class ConversionListRequest {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Schema(example = "2022-05-29")
-    private Date transactionDate;
+    private LocalDate transactionDate;
 }
