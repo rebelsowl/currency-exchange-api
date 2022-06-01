@@ -25,13 +25,7 @@ public class ExternalFXService implements IExternalFXService {
         this.restTemplate = restTemplate;
     }
 
-    /**
-     * gets exchange rate from external fx api
-     *
-     * @param sourceCurrency base currency
-     * @param targetCurrency target currency
-     * @return exchange rate
-     */
+
     @Override
     public BigDecimal getExchangeRate(String sourceCurrency, String targetCurrency) {
         checkCurrencyFormat(sourceCurrency);

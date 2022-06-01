@@ -32,6 +32,7 @@ public class ConversionService implements IConversionService {
         this.fxService = fxService;
     }
 
+
     @Override
     public ConversionResponse conversion(ConversionRequest conversionRequest) {
         checkAmount(conversionRequest);
@@ -40,22 +41,20 @@ public class ConversionService implements IConversionService {
 //        conversionRate.setScale(6, RoundingMode.HALF_EVEN);
 
         Conversion conversion = new Conversion();
-
         conversion.setSourceCurrency(conversionRequest.getSourceCurrency());
         conversion.setTargetCurrency(conversionRequest.getTargetCurrency());
         conversion.setSourceAmount(conversionRequest.getSourceAmount());
         conversion.setTargetAmount(conversionRate.multiply(conversionRequest.getSourceAmount()));
 
         Conversion savedConversion = conversionRepository.save(conversion);
+
         ConversionResponse response = new ConversionResponse();
         response.setTransactionId(savedConversion.getId());
         response.setTargetAmount(savedConversion.getTargetAmount());
         return response;
     }
 
-    /**
-     * @return
-     */
+
     @Override
     public Page<Conversion> getConversions(ConversionListRequest request, Pageable pageable) {
         checkRequest(request);

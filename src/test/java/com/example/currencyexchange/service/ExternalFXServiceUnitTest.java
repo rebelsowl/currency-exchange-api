@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 
 @SpringBootTest
 public class ExternalFXServiceUnitTest {
-    private static String sourceCurrency = "USD";
-    private static String targetCurrency = "EUR";
+    private static final String sourceCurrency = "USD";
+    private static final String targetCurrency = "EUR";
 
     @Mock
     private RestTemplate restTemplate;

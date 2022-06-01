@@ -61,7 +61,7 @@ public class ConversionController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorResponse.class))})})
     @GetMapping("/conversions")
-    public ResponseEntity<List<Conversion>> getConversions(@Parameter(description = "Query request, at least one of the inputs shall be provided.") ConversionListRequest request, @Parameter(description = "Pagination request.", schema = @Schema(implementation = Pageable.class)) Pageable pageable) {
+    public ResponseEntity<List<Conversion>> getConversions(@Parameter(description = "Query request, at least one of the inputs shall be provided.") ConversionListRequest request, @Parameter(description = "Pagination request. \n ", schema = @Schema(implementation = Pageable.class)) Pageable pageable) {
         return ResponseEntity.ok(conversionService.getConversions(request, pageable).getContent());
     }
 
