@@ -14,7 +14,7 @@ import java.time.Instant;
 public interface ConversionRepository extends PagingAndSortingRepository<Conversion, Long> {
 
     // if input(s) is null where clause evaluates to true
-    @Query("SELECT c FROM Conversion c WHERE (:id is null or c.id = :id) and (:startDate is null or (c.createDate >= :startDate and c.createDate < :endDate))")
+    @Query("SELECT c FROM Conversion c WHERE (:id is null or c.id = :id) and ((:startDate is null or :endDate is null) or (c.createDate >= :startDate and c.createDate < :endDate))")
     Page<Conversion> findByIdAndDate(@Param("id") Long id, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate, Pageable pageable);
 
 

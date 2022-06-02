@@ -28,7 +28,7 @@ public class ExternalFXService implements IExternalFXService {
 
     @Override
     public BigDecimal getExchangeRate(String sourceCurrency, String targetCurrency) {
-        checkCurrencyFormat(sourceCurrency);
+        checkCurrencyFormat(sourceCurrency); // validate input
         checkCurrencyFormat(targetCurrency);
         try {
             String url = String.format("%s/convert?from=%s&to=%s", EXTERNAL_SERVICE_API, sourceCurrency, targetCurrency);

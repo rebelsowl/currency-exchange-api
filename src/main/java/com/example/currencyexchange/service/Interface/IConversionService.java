@@ -19,7 +19,7 @@ public interface IConversionService {
      * @param conversionListRequest at least one of the inputs should be provided
      * @param pageable  {@link Pageable}
      *
-     * @return paged list of conversions
+     * @return paged list of queried conversions
      */
     Page<Conversion> getConversions(ConversionListRequest conversionListRequest, Pageable pageable);
 }

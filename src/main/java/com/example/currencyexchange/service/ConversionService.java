@@ -35,18 +35,18 @@ public class ConversionService implements IConversionService {
 
     @Override
     public ConversionResponse conversion(ConversionRequest conversionRequest) {
-        checkAmount(conversionRequest);
+        checkAmount(conversionRequest); // validate input
 
-        BigDecimal conversionRate = fxService.getExchangeRate(conversionRequest.getSourceCurrency(), conversionRequest.getTargetCurrency());
+        BigDecimal conversionRate = fxService.getExchangeRate(conversionRequest.getSourceCurrency(), conversionRequest.getTargetCurrency()); // getting current conversion rate form fx service
 //        conversionRate.setScale(6, RoundingMode.HALF_EVEN);
 
         Conversion conversion = new Conversion();
         conversion.setSourceCurrency(conversionRequest.getSourceCurrency());
         conversion.setTargetCurrency(conversionRequest.getTargetCurrency());
         conversion.setSourceAmount(conversionRequest.getSourceAmount());
-        conversion.setTargetAmount(conversionRate.multiply(conversionRequest.getSourceAmount()));
+        conversion.setTargetAmount(conversionRate.multiply(conversionRequest.getSourceAmount()));  // calculating the amount -> conversion rate * source amount
 
-        Conversion savedConversion = conversionRepository.save(conversion);
+        Conversion savedConversion = conversionRepository.save(conversion); // saving the conversion
 
         ConversionResponse response = new ConversionResponse();
         response.setTransactionId(savedConversion.getId());
@@ -57,11 +57,12 @@ public class ConversionService implements IConversionService {
 
     @Override
     public Page<Conversion> getConversions(ConversionListRequest request, Pageable pageable) {
-        checkRequest(request);
+        checkRequest(request); // validate input
+
         Instant startDate = null;
         Instant endDate = null;
-        if (request.getTransactionDate() != null) {
-             startDate = request.getTransactionDate().atStartOfDay().toInstant(ZoneOffset.UTC);
+        if (request.getTransactionDate() != null) { // if date is provided
+             startDate = request.getTransactionDate().atStartOfDay().toInstant(ZoneOffset.UTC); // creating start and end time
              endDate = startDate.plus(1, ChronoUnit.DAYS);
         }
         return conversionRepository.findByIdAndDate(request.getTransactionId(), startDate, endDate, pageable);

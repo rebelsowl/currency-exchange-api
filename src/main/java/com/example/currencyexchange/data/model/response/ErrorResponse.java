@@ -1,8 +1,10 @@
 package com.example.currencyexchange.data.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @Data
 public class ErrorResponse {
