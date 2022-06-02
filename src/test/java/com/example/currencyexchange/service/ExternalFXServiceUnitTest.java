@@ -61,7 +61,7 @@ public class ExternalFXServiceUnitTest {
         FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, targetCurrency));
 
         assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
-//        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
+        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ExternalFXServiceUnitTest {
         FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, targetCurrency));
 
         assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
-//        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
+        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ExternalFXServiceUnitTest {
         FormatException exception = assertThrows(FormatException.class, () -> fxService.getExchangeRate(wrongFormatCurrency, targetCurrency));
 
         assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
-//        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
+        assertThat(exception.getErrorResponse().getMessage()).startsWith("Currency should be 3 letters long and all uppercase ex: USD, EUR");
     }
 
     @Test

@@ -36,11 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ConversionController.class)
 class ConversionControllerUnitTest {
 
-    static String sourceCurrency;
-    static String targetCurrency;
-    static BigDecimal sourceAmount;
-    static BigDecimal exchangeRate;
-    static ConversionRequest mockRequest;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -48,23 +43,18 @@ class ConversionControllerUnitTest {
     @MockBean
     private ConversionService conversionService;
 
+    static ConversionRequest mockRequest = new ConversionRequest();
     @BeforeAll
     public static void setUp() {
-        sourceCurrency = "USD";
-        targetCurrency = "EUR";
-        sourceAmount = new BigDecimal("12.1");
-        exchangeRate = new BigDecimal("2.1");
-
-        mockRequest = new ConversionRequest();
-        mockRequest.setSourceCurrency(sourceCurrency);
-        mockRequest.setTargetCurrency(targetCurrency);
-        mockRequest.setSourceAmount(sourceAmount);
+        mockRequest.setSourceCurrency("USD");
+        mockRequest.setTargetCurrency("EUR");
+        mockRequest.setSourceAmount(new BigDecimal("12.1"));
     }
 
     @Test
     void testPostConversionHappyPath() throws Exception {
         ConversionResponse mockResponse = new ConversionResponse();
-        mockResponse.setTargetAmount(sourceAmount.multiply(exchangeRate));
+        mockResponse.setTargetAmount(new BigDecimal("12.1").multiply(new BigDecimal("2.1")));
         mockResponse.setTransactionId(2L);
 
         when(conversionService.conversion(mockRequest)).thenReturn(mockResponse);
@@ -79,7 +69,7 @@ class ConversionControllerUnitTest {
 
         ConversionResponse conversionResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ConversionResponse.class);
         assertThat(conversionResponse.getTransactionId()).isEqualTo(2L);
-        assertThat(conversionResponse.getTargetAmount()).isEqualTo(sourceAmount.multiply(exchangeRate));
+        assertThat(conversionResponse.getTargetAmount()).isEqualTo(new BigDecimal("12.1").multiply(new BigDecimal("2.1")));
     }
 
     @Test
@@ -258,7 +248,6 @@ class ConversionControllerUnitTest {
         assertThat(conversionResponse.get(0).getId()).isEqualTo(1L);
     }
 
-
     @Test
     void testGetConversionsWrongPagination() throws Exception {
         List<Conversion> conversions = new ArrayList<>();
@@ -283,7 +272,5 @@ class ConversionControllerUnitTest {
         });
         assertThat(conversionResponse.get(0).getId()).isEqualTo(1L);
     }
-
-
 
 }

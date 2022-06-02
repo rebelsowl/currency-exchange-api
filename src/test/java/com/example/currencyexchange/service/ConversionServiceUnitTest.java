@@ -40,21 +40,15 @@ class ConversionServiceUnitTest {
     @InjectMocks
     private ConversionService conversionService;
 
-    static String sourceCurrency;
-    static String targetCurrency;
-    static BigDecimal sourceAmount;
-    static BigDecimal exchangeRate;
-    static ConversionRequest mockRequest;
+    static String sourceCurrency = "USD";
+    static String targetCurrency = "EUR";
+    static BigDecimal sourceAmount = new BigDecimal("12.1");
+    static BigDecimal exchangeRate = new BigDecimal("2.1");
+    static ConversionRequest mockRequest = new ConversionRequest();
 
 
     @BeforeAll
     public static void setUp(){
-        sourceCurrency = "USD";
-        targetCurrency = "EUR";
-        sourceAmount = new BigDecimal("12.1");
-        exchangeRate = new BigDecimal("2.1");
-
-        mockRequest = new ConversionRequest();
         mockRequest.setSourceCurrency(sourceCurrency);
         mockRequest.setTargetCurrency(targetCurrency);
         mockRequest.setSourceAmount(sourceAmount);
@@ -100,8 +94,8 @@ class ConversionServiceUnitTest {
     }
 
     @Test
-    public void testConversionAmount001() {
-        mockRequest.setSourceAmount(new BigDecimal("0.01"));
+    public void testConversionAmount009() {
+        mockRequest.setSourceAmount(new BigDecimal("0.09"));
 
         FormatException exception = assertThrows(FormatException.class, () -> conversionService.conversion(mockRequest));
 
@@ -111,12 +105,8 @@ class ConversionServiceUnitTest {
 
     @Test
     public void testConversionWrongCurrencyFormat() {
-        Conversion mockSavedConversion = new Conversion();
-        mockSavedConversion.setId(1L);
-        mockSavedConversion.setSourceCurrency("a1Z");
-        mockSavedConversion.setTargetCurrency("AAAA");
-        mockSavedConversion.setSourceAmount(sourceAmount);
-        mockSavedConversion.setTargetAmount(sourceAmount.multiply(exchangeRate));
+        mockRequest.setSourceCurrency("A1A");
+        mockRequest.setTargetCurrency("ABCD");
 
         when(fxService.getExchangeRate(any(String.class), any(String.class))).thenThrow(FormatException.class);
 
@@ -136,7 +126,6 @@ class ConversionServiceUnitTest {
         List<Conversion> conversions = new ArrayList<>();
         Conversion foundConversion = new Conversion();
         foundConversion.setId(1L);
-
         conversions.add(foundConversion);
 
         when(conversionRepository.findByIdAndDate(any(Long.class), any(Instant.class), any(Instant.class), any(Pageable.class))).thenReturn(new PageImpl<>(conversions));
@@ -154,14 +143,17 @@ class ConversionServiceUnitTest {
         List<Conversion> conversions = new ArrayList<>();
         Conversion foundConversion = new Conversion();
         foundConversion.setId(5L);
-
         conversions.add(foundConversion);
+        Conversion foundConversion2 = new Conversion();
+        foundConversion2.setId(6L);
+        conversions.add(foundConversion2);
 
         when(conversionRepository.findByIdAndDate(nullable(Long.class), any(Instant.class), any(Instant.class), any(Pageable.class))).thenReturn(new PageImpl<>(conversions));
 
         Page<Conversion> response = conversionService.getConversions(mockRequest, PageRequest.of(0,10));
 
         assertThat(response.getContent().get(0).getId()).isEqualTo(5L);
+        assertThat(response.getContent().get(1).getId()).isEqualTo(6L);
     }
 
     @Test
@@ -190,7 +182,6 @@ class ConversionServiceUnitTest {
 
         assertThat(exception.getErrorResponse().getCode()).isEqualTo(ErrorCodes.FORMAT_ERROR.getCode());
         assertThat(exception.getErrorResponse().getMessage()).isEqualTo("Please provide transaction id or transaction date.");
-
     }
 
     @Test
@@ -202,7 +193,6 @@ class ConversionServiceUnitTest {
         List<Conversion> conversions = new ArrayList<>();
         Conversion foundConversion = new Conversion();
         foundConversion.setId(2L);
-
         conversions.add(foundConversion);
 
         when(conversionRepository.findByIdAndDate(any(Long.class), any(Instant.class), any(Instant.class), nullable(Pageable.class))).thenReturn(new PageImpl<>(conversions));
